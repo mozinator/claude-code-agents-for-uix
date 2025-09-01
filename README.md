@@ -51,26 +51,35 @@
 - Use agent names directly in opencode.ai interface
 - All agents include proper opencode.ai frontmatter with tool configurations
 
-## Usage
+## Batch Installation
 
-These agents work together to provide comprehensive UIx development support, from initial project setup through advanced React integration and performance optimization.
+### One-liner Setup
 
-### Getting Started
-1. Use `uix-setup-specialist` for new project initialization with Shadow-cljs or Leiningen
-2. Employ `uix-component-architect` and `uix-state-manager` for core UI architecture and modern state management
-3. Leverage `uix-lifecycle-coordinator` and `uix-react-integrator` for React hooks and modern features
-4. Apply modern testing and debugging patterns for quality assurance
+```bash
+# Setup for Claude Code (appends to existing CLAUDE.md)
+mkdir -p .claude/agents && \
+for agent in uix-animation-coordinator uix-async-handler uix-component-architect \
+             uix-forms-expert uix-interop-specialist uix-lifecycle-coordinator \
+             uix-migration-specialist uix-react-integrator uix-routing-navigator \
+             uix-setup-specialist uix-state-manager uix-ui-designer; do \
+  curl -s https://raw.githubusercontent.com/mozinator/agents/main/code-agents-for-uix/.claude/agents/${agent}.md \
+       -o .claude/agents/${agent}.md; \
+done && \
+curl -s https://raw.githubusercontent.com/mozinator/agents/main/code-agents-for-uix/CLAUDE.md \
+     >> CLAUDE.md && \
 
-### UI & Interaction Development
-- Use `uix-ui-designer` for modern component library integration and contemporary styling approaches
-- Apply `uix-forms-expert` for modern form handling with React Hook Form and validation
-- Employ `uix-animation-coordinator` for smooth animations with Framer Motion and React Spring
-
-### Advanced Development
-- Use `uix-routing-navigator` for modern React Router v6+ navigation patterns
-- Apply `uix-async-handler` for modern HTTP requests with fetch API and async patterns
-- Employ `uix-interop-specialist` for modern JavaScript interop and ES6+ module integration
-- Leverage `uix-migration-specialist` for Reagent to UIx migration assistance
+# Setup for opencode.ai (appends to existing AGENTS.md)
+mkdir -p .opencode/agent && \
+for agent in uix-animation-coordinator uix-async-handler uix-component-architect \
+             uix-forms-expert uix-interop-specialist uix-lifecycle-coordinator \
+             uix-migration-specialist uix-react-integrator uix-routing-navigator \
+             uix-setup-specialist uix-state-manager uix-ui-designer; do \
+  curl -s https://raw.githubusercontent.com/mozinator/agents/main/code-agents-for-uix/.opencode/agent/${agent}.md \
+       -o .opencode/agent/${agent}.md; \
+done && \
+curl -s https://raw.githubusercontent.com/mozinator/agents/main/code-agents-for-uix/AGENTS.md \
+     >> AGENTS.md
+```
 
 ## Agent Architecture
 
