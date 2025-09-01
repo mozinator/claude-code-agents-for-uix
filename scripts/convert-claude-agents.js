@@ -309,10 +309,34 @@ Specialized agents for comprehensive UIx ClojureScript development with React 19
   agentFiles.forEach(filename => {
     const filePath = path.join(CLAUDE_AGENTS_DIR, filename);
     const content = fs.readFileSync(filePath, 'utf8');
-    const frontmatter = parseFrontmatter(content);
 
     const agentName = filename.replace('.md', '');
-    const description = frontmatter.description || `Agent for ${agentName.replace(/-/g, ' ')}`;
+
+    // Extract description from content (first meaningful paragraph after title)
+    let description = `Agent for ${agentName.replace(/-/g, ' ')}`;
+    const lines = content.split('\n');
+    let foundTitle = false;
+    let foundPurpose = false;
+
+    for (const line of lines) {
+      const trimmed = line.trim();
+
+      if (trimmed.startsWith('# ')) {
+        foundTitle = true;
+        continue;
+      }
+
+      if (foundTitle && trimmed.startsWith('## Purpose')) {
+        foundPurpose = true;
+        continue;
+      }
+
+      if (foundPurpose && trimmed && !trimmed.startsWith('#') && trimmed.length > 20) {
+        // Extract first paragraph after ## Purpose
+        description = trimmed.length > 100 ? trimmed.substring(0, 100) + '...' : trimmed;
+        break;
+      }
+    }
 
     // Categorize agents based on naming pattern
     if (agentName.includes('setup') || agentName.includes('component') || agentName.includes('state') || agentName.includes('lifecycle')) {

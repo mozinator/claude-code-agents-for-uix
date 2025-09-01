@@ -1,6 +1,6 @@
-# UIx Agents for Claude Code
+# UIx Code Agents
 
-11 specialized Claude Code agents for comprehensive UIx ClojureScript development.
+11 specialized agents for comprehensive UIx ClojureScript development with React 19 support.
 
 **[UIx](https://uix-cljs.dev/)** is an idiomatic ClojureScript interface to modern React that enables building efficient, reactive user interfaces with functional programming principles and seamless JavaScript interop. UIx embraces modern React patterns including hooks, concurrent rendering, and contemporary development practices.
 
@@ -28,6 +28,29 @@
 ### Migration & Quality Agents
 - **[uix-migration-specialist](/.claude/agents/uix-migration-specialist.md)** - Comprehensive migration assistance from Reagent to UIx, automated transformation tools, and migration best practices
 
+## Platform Setup
+
+### Claude Code Setup
+
+**Installation**:
+1. Copy agent files from `/.claude/agents/` to your project's `/.claude/agents/` directory
+2. Append contents from `CLAUDE.md` to your project's `CLAUDE.md` file
+
+**Usage**:
+- Use `@agent-name` syntax to invoke specific agents (e.g., `@uix-setup-specialist`)
+- Agents work directly in Claude Code's conversation interface
+
+### opencode.ai Setup
+
+**Installation**:
+1. Copy agent files from `/.opencode/agent/` to your project's `/.opencode/agent/` directory
+2. The `AGENTS.md` file provides automatic agent discovery
+
+**Usage**:
+- Agents are automatically discovered from `.opencode/agent/` directory
+- Use agent names directly in opencode.ai interface
+- All agents include proper opencode.ai frontmatter with tool configurations
+
 ## Usage
 
 These agents work together to provide comprehensive UIx development support, from initial project setup through advanced React integration and performance optimization.
@@ -47,38 +70,42 @@ These agents work together to provide comprehensive UIx development support, fro
 - Use `uix-routing-navigator` for modern React Router v6+ navigation patterns
 - Apply `uix-async-handler` for modern HTTP requests with fetch API and async patterns
 - Employ `uix-interop-specialist` for modern JavaScript interop and ES6+ module integration
-- Leverage modern performance optimization and debugging techniques
+- Leverage `uix-migration-specialist` for Reagent to UIx migration assistance
 
 ## Agent Architecture
 
-Each agent follows Claude Code sub-agent conventions:
+Each agent follows both Claude Code and opencode.ai conventions:
 - **Focused Expertise**: Single-responsibility specialization for specific UIx development areas
 - **Comprehensive Background**: Deep UIx and modern React knowledge with ClojureScript context
 - **Practical Implementation**: Real-world patterns, best practices, and contemporary tooling integration
 - **Quality Focus**: Modern testing strategies, performance optimization, and debugging techniques
 
-## Installation
+## Scripts
 
-1. Copy the agent files from `/.claude/agents/` to your project's `/.claude/agents/` directory
-2. Append the contents from `CLAUDE.md` to your project's `CLAUDE.md` file
+### Agent Synchronization (`scripts/convert-claude-agents.js`)
 
-## Migration from Reagent
+This script maintains synchronization between Claude Code and opencode.ai agent formats:
 
-This collection has been comprehensively refactored from Reagent to UIx. UIx provides:
+**Purpose**: Keep agent files in sync across different AI platforms
 
-- **Modern React Patterns**: Full support for React 18+ concurrent features, hooks, and contemporary patterns
-- **Enhanced Developer Experience**: Improved hot reloading, better debugging, and modern tooling integration
-- **Performance Optimizations**: Better tree shaking, smaller bundles, and improved runtime performance
-- **Future-Proof Architecture**: Built for modern React ecosystem and contemporary web development
+**Workflow**:
+1. **Edit Source**: Modify agents in `.claude/agents/` directory (Claude Code format)
+2. **Convert**: Run `node scripts/convert-claude-agents.js` to sync to `.opencode/agent/`
+3. **Validate**: Use `--validate` flag to ensure opencode.ai compatibility
+4. **Document**: AGENTS.md is automatically updated with latest agent information
+5. **Commit**: Both directories should be committed to maintain platform sync
 
-### Key Differences from Reagent
-- `defui` instead of Form-1/2/3 components
-- `$` macro HyperScript syntax instead of Hiccup vectors
-- React hooks (`use-state`, `use-effect`) instead of ratoms
-- Modern async patterns with fetch API
-- Contemporary styling with CSS-in-JS libraries
-- Modern form handling with React Hook Form
-- Advanced animations with Framer Motion
+**Usage Examples**:
+```bash
+# Full conversion and sync
+node scripts/convert-claude-agents.js
+
+# Validate existing conversions
+node scripts/convert-claude-agents.js --validate
+
+# Update documentation only
+node scripts/convert-claude-agents.js --agents-md
+```
 
 ## Contributing
 
@@ -94,3 +121,7 @@ This is a comprehensive agent collection covering all aspects of UIx development
 - [Modern React Patterns](https://react.dev/learn)
 - [React Router](https://reactrouter.com/)
 - [Framer Motion](https://www.framer.com/motion/)
+
+---
+
+*Compatible with both Claude Code and opencode.ai platforms*
