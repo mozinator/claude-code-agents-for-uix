@@ -51,6 +51,39 @@
 - Use agent names directly in opencode.ai interface
 - All agents include proper opencode.ai frontmatter with tool configurations
 
+### clj-kondo Configuration
+
+**Setup clj-kondo** for optimal UIx development experience:
+
+1. **Install clj-kondo**:
+   ```bash
+   # Using brew (macOS)
+   brew install clj-kondo
+
+   # Or download from https://github.com/clj-kondo/clj-kondo/releases
+   ```
+
+2. **Create `.clj-kondo/config.edn`** in your project root:
+   ```clojure
+   {:lint-as {uix.core/defui clojure.core/defn
+              uix.core/$ clojure.core/let}
+    :linters {:unresolved-symbol {:exclude [(uix.core/defui)
+                                           (uix.core/$)]}}}
+   ```
+
+3. **Add UIx-specific hooks** (optional, for enhanced analysis):
+   ```clojure
+   ;; In .clj-kondo/config.edn
+   {:hooks {:analyze-call {uix.core/defui hooks.uix/defui
+                           uix.core/$ hooks.uix/dollar-macro}}}
+   ```
+
+4. **Recommended VS Code extensions**:
+   - Clojure linting with clj-kondo
+   - Calva or ClojureVS Code for development
+
+This configuration enables proper linting for UIx's `defui` macro and `$` HyperScript syntax, reducing false positives and improving code analysis.
+
 ## Usage
 
 These agents work together to provide comprehensive UIx development support, from initial project setup through advanced React integration and performance optimization.
@@ -79,33 +112,6 @@ Each agent follows both Claude Code and opencode.ai conventions:
 - **Comprehensive Background**: Deep UIx and modern React knowledge with ClojureScript context
 - **Practical Implementation**: Real-world patterns, best practices, and contemporary tooling integration
 - **Quality Focus**: Modern testing strategies, performance optimization, and debugging techniques
-
-## Scripts
-
-### Agent Synchronization (`scripts/convert-claude-agents.js`)
-
-This script maintains synchronization between Claude Code and opencode.ai agent formats:
-
-**Purpose**: Keep agent files in sync across different AI platforms
-
-**Workflow**:
-1. **Edit Source**: Modify agents in `.claude/agents/` directory (Claude Code format)
-2. **Convert**: Run `node scripts/convert-claude-agents.js` to sync to `.opencode/agent/`
-3. **Validate**: Use `--validate` flag to ensure opencode.ai compatibility
-4. **Document**: AGENTS.md is automatically updated with latest agent information
-5. **Commit**: Both directories should be committed to maintain platform sync
-
-**Usage Examples**:
-```bash
-# Full conversion and sync
-node scripts/convert-claude-agents.js
-
-# Validate existing conversions
-node scripts/convert-claude-agents.js --validate
-
-# Update documentation only
-node scripts/convert-claude-agents.js --agents-md
-```
 
 ## Contributing
 

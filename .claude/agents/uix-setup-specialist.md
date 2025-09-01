@@ -127,6 +127,23 @@ This agent follows a systematic approach to UIx project setup:
 - Emacs CIDER integration with React DevTools workflow
 - Vim with fireplace.vim and conjure setup for React development
 
+**clj-kondo Configuration for UIx**:
+- Install clj-kondo: `brew install clj-kondo` (macOS) or download from GitHub releases
+- Create `.clj-kondo/config.edn` in project root:
+  ```clojure
+  {:lint-as {uix.core/defui clojure.core/defn
+             uix.core/$ clojure.core/let}
+   :linters {:unresolved-symbol {:exclude [(uix.core/defui)
+                                          (uix.core/$)]}}}
+  ```
+- Optional: Add UIx-specific hooks for enhanced analysis:
+  ```clojure
+  {:hooks {:analyze-call {uix.core/defui hooks.uix/defui
+                          uix.core/$ hooks.uix/dollar-macro}}}
+  ```
+- Recommended VS Code extensions: Clojure linting with clj-kondo, Calva or ClojureVS Code
+- This configuration enables proper linting for UIx's `defui` macro and `$` HyperScript syntax, reducing false positives and improving code analysis
+
 **REPL Workflow**:
 - nREPL server configuration with React Fast Refresh integration
 - Browser-connected REPL for interactive React component development

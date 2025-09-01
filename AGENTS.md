@@ -64,9 +64,9 @@ All agents are designed to work with **React 19** and its latest features:
 
 ## Installation
 
-1. Copy the agent files from `.claude/agents/` to your project's `.opencode/agent/` directory
-2. Run the conversion script: `node scripts/convert-claude-agents.js`
-3. The script will generate opencode.ai compatible agents and this AGENTS.md file
+1. Copy the agent files from `.claude/agents/` to your project's `.claude/agents/` directory (for Claude Code)
+2. Copy the agent files from `.opencode/agent/` to your project's `.opencode/agent/` directory (for opencode.ai)
+3. Agents are updated manually to maintain synchronization between platforms
 
 ## Migration from Reagent
 
