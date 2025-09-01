@@ -99,6 +99,11 @@ function parseFrontmatter(content) {
   let inToolsSection = false;
   const tools = {};
 
+  // Check if content has YAML frontmatter
+  if (!content.trim().startsWith('---')) {
+    return frontmatter; // Return empty frontmatter for files without YAML
+  }
+
   for (const line of lines) {
     if (line.trim() === '---') {
       if (!inFrontmatter) {
@@ -108,7 +113,7 @@ function parseFrontmatter(content) {
         break;
       }
     }
-    
+
     if (!inFrontmatter) continue;
 
     // Handle tools section specially
@@ -189,13 +194,40 @@ const MODEL_MAPPING = {
 function convertAgent(claudeContent, filename) {
   const claudeFrontmatter = parseFrontmatter(claudeContent);
 
-  // Extract content after frontmatter
-  const contentParts = claudeContent.split('---');
-  const body = contentParts.length > 2 ? contentParts.slice(2).join('---').trim() : '';
+  // Check if file has YAML frontmatter (starts with ---)
+  const hasFrontmatter = claudeContent.trim().startsWith('---');
+
+  // Extract content after frontmatter or use entire content
+  let body;
+  if (hasFrontmatter) {
+    const contentParts = claudeContent.split('---');
+    body = contentParts.length > 2 ? contentParts.slice(2).join('---').trim() : '';
+  } else {
+    body = claudeContent.trim();
+  }
+
+  // Extract description from content if not in frontmatter
+  let description = claudeFrontmatter.description;
+  if (!description && body) {
+    // Try to extract from first heading or first meaningful paragraph
+    const lines = body.split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (trimmed.startsWith('# ')) {
+        // Use first heading as description
+        description = trimmed.substring(2).trim();
+        break;
+      } else if (trimmed && !trimmed.startsWith('#') && trimmed.length > 10) {
+        // Use first paragraph as description (truncated)
+        description = trimmed.length > 100 ? trimmed.substring(0, 100) + '...' : trimmed;
+        break;
+      }
+    }
+  }
 
   // Convert frontmatter
   const opencodeFrontmatter = {
-    description: claudeFrontmatter.description || `Converted from Claude Code agent: ${filename.replace('.md', '')}`,
+    description: description || `Converted from Claude Code agent: ${filename.replace('.md', '')}`,
     mode: 'subagent',
     temperature: parseFloat(claudeFrontmatter.temperature) || 0.3,
     tools: convertTools(claudeFrontmatter.tools)
