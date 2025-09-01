@@ -51,39 +51,6 @@
 - Use agent names directly in opencode.ai interface
 - All agents include proper opencode.ai frontmatter with tool configurations
 
-### clj-kondo Configuration
-
-**Setup clj-kondo** for optimal UIx development experience:
-
-1. **Install clj-kondo**:
-   ```bash
-   # Using brew (macOS)
-   brew install clj-kondo
-
-   # Or download from https://github.com/clj-kondo/clj-kondo/releases
-   ```
-
-2. **Create `.clj-kondo/config.edn`** in your project root:
-   ```clojure
-   {:lint-as {uix.core/defui clojure.core/defn
-              uix.core/$ clojure.core/let}
-    :linters {:unresolved-symbol {:exclude [(uix.core/defui)
-                                           (uix.core/$)]}}}
-   ```
-
-3. **Add UIx-specific hooks** (optional, for enhanced analysis):
-   ```clojure
-   ;; In .clj-kondo/config.edn
-   {:hooks {:analyze-call {uix.core/defui hooks.uix/defui
-                           uix.core/$ hooks.uix/dollar-macro}}}
-   ```
-
-4. **Recommended VS Code extensions**:
-   - Clojure linting with clj-kondo
-   - Calva or ClojureVS Code for development
-
-This configuration enables proper linting for UIx's `defui` macro and `$` HyperScript syntax, reducing false positives and improving code analysis.
-
 ## Usage
 
 These agents work together to provide comprehensive UIx development support, from initial project setup through advanced React integration and performance optimization.
